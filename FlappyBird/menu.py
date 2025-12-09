@@ -41,11 +41,15 @@ class Button:
 def menu():
     play_button = Button(SCREEN_WIDTH / 2 - 150, SCREEN_HEIGHT / 2 - 50, 300, 100, "PLAY", (216, 210, 210), (182, 175, 175))
     quit_button = Button(SCREEN_WIDTH / 2 - 150, (SCREEN_HEIGHT / 2 - 50) + 150, 300, 100, "QUIT", (216, 210, 210), (182, 175, 175))
+    background = pygame.image.load("asset/background.jpg").convert()
+    background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
 
     running = True
 
     while running:
-        window.fill(SCREEN_COLOR)
+        # window.fill(SCREEN_COLOR)
+        window.blit(background, (0, 0))
 
         title = font.render("FLAPPY BIRD", True, (0, 0, 0))
         window.blit(title, (300, 150))
@@ -72,4 +76,5 @@ def menu():
 
 if __name__ == "__main__":
     pygame.init()
+    pygame.mixer.init()
     menu()
