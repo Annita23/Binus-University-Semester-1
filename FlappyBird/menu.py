@@ -39,10 +39,11 @@ class Button:
 
 
 def menu():
-    play_button = Button(350, 350, 300, 100, "PLAY", (216, 210, 210), (182, 175, 175))
-    quit_button = Button(350, 500, 300, 100, "QUIT", (216, 210, 210), (182, 175, 175))
+    play_button = Button(SCREEN_WIDTH / 2 - 150, SCREEN_HEIGHT / 2 - 50, 300, 100, "PLAY", (216, 210, 210), (182, 175, 175))
+    quit_button = Button(SCREEN_WIDTH / 2 - 150, (SCREEN_HEIGHT / 2 - 50) + 150, 300, 100, "QUIT", (216, 210, 210), (182, 175, 175))
 
     running = True
+
     while running:
         window.fill(SCREEN_COLOR)
 
