@@ -1,7 +1,7 @@
 # Flappy Bird 
 
 This project is a personal of **Flappy Bird** game, a bird game, using **Python** and **Pygame**.  
-It includes animated spritesheets, a menu system, collision detection, scoring.
+It includes animated spritesheets, a menu system, collision detection and scoring.
 
 ---
 
