@@ -68,10 +68,10 @@ Main language used to build the game logic.
 ### Pygame
 - **Pygame Version:** 2.5.2  
 Used for:
-- Window creation  
-- Rendering (images, text, sprites)  
-- Keyboard input handling  
-- Image transformations (scale, subsurface, flip)
+  - Window creation  
+  - Rendering (images, text, sprites)  
+  - Keyboard input handling  
+  - Image transformations (scale, subsurface, flip)
 
 ---
 
