@@ -4,7 +4,7 @@ from ursina import *
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 800
-SCREEN_COLOR = (135, 206, 235)
+
 
 class Bird:    
     def __init__(self, window):
@@ -26,6 +26,7 @@ class Bird:
         self.width = 80
         self.height = 70
 
+    # Load the frames from the bird spritesheet
     def load_frames(self):
         sheet_width = self.spritesheet.get_width()
         sheet_height = self.spritesheet.get_height()
@@ -38,6 +39,7 @@ class Bird:
                 frame = self.spritesheet.subsurface((x * frame_w, y * frame_h, frame_w, frame_h))
                 self.frames.append(frame)
 
+    # animate the bird by cycling through frames
     def animate(self):
         self.frame_timer += self.animation_speed
         if self.frame_timer >= 1:
@@ -71,6 +73,7 @@ class Pipe:
     def __init__(self, window):
         self.window = window
 
+        #using the same pipe image for top and bottom pipes
         self.pipe_image = pygame.image.load("asset/pipe.png").convert_alpha()
         self.pipe_image_flipped = pygame.transform.flip(self.pipe_image, False, True) # flip only vertically
 
@@ -94,7 +97,7 @@ class Pipe:
         self.pos_x -= speed
 
     
-
+# game loop that will run the game
 class Game:
     def __init__(self):
         self.window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -116,15 +119,19 @@ class Game:
         bird_position = self.bird.get_position()
         bird_size = self.bird.get_size()
 
+        # check collision with the borders of the screen
         if bird_position[0] < 0 or (bird_position[0] + bird_size[0]) > SCREEN_WIDTH or bird_position[1] < 0 or (bird_position[1] + bird_size[1]) > SCREEN_HEIGHT:
             print("Collision detected! Game Over.")
             self.running = False
+
+        #check collision with pipes
         for pipe in self.pipes:
             if (bird_position[0] + bird_size[0] > pipe.pos_x and bird_position[0] < pipe.pos_x + pipe.width):
                 if (bird_position[1] < pipe.top_height or bird_position[1] + bird_size[1] > pipe.top_height + pipe.gap_height):
                     print("Collision with pipe! Game Over.")
                     self.running = False
 
+    # update score when bird passes through pipes
     def update_score(self):
         for pipe in self.pipes:
             if not pipe.passed and pipe.pos_x + pipe.width < self.bird.pos_x:
@@ -162,7 +169,7 @@ class Game:
         self.window.blit(score_text, (20, 20))
 
     
-
+    # increase pipe speed every 3 points scored
     def increase_speed(self):
         new_level = self.score // 3
 
@@ -170,7 +177,7 @@ class Game:
             self.speed_level = new_level
             self.pipe_speed += 1
 
-    
+    # run the main game loop
     def run(self):
         while self.running:
             self.clock.tick(40)

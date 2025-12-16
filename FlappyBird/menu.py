@@ -13,6 +13,7 @@ font = pygame.font.Font("Arial.ttf", 70)
 button_font = pygame.font.Font("Arial.ttf", 50)
 
 
+# button class for the menu
 class Button:
     def __init__(self, x, y, width, height, text, color, hover_color):
         self.rect = pygame.Rect(x, y, width, height)
@@ -46,6 +47,7 @@ def menu():
 
     running = True
 
+    #menu loop that will run until the user quits
     while running:
         window.blit(background, (0, 0))
 
