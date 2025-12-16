@@ -6,14 +6,7 @@ SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 800
 SCREEN_COLOR = (135, 206, 235)
 
-class Bird:
-    pos_x = SCREEN_WIDTH / 10
-    pos_y = SCREEN_HEIGHT / 2
-    gravity = 6
-    jump_strength = 70
-    width = 80
-    height = 70
-    
+class Bird:    
     def __init__(self, window):
         self.window = window
 
@@ -22,17 +15,23 @@ class Bird:
         self.rows = 3
         self.frames = []
         self.load_frames()
-
         self.current_frame = 0
         self.animation_speed = 0.25
         self.frame_timer = 0
+
+        self.pos_x = SCREEN_WIDTH / 10
+        self.pos_y = SCREEN_HEIGHT / 2
+        self.gravity = 6
+        self.jump_strength = 70
+        self.width = 80
+        self.height = 70
 
     def load_frames(self):
         sheet_width = self.spritesheet.get_width()
         sheet_height = self.spritesheet.get_height()
 
-        frame_w = sheet_width // self.columns
-        frame_h = sheet_height // self.rows
+        frame_w = sheet_width / self.columns
+        frame_h = sheet_height / self.rows
 
         for y in range(self.rows):
             for x in range(self.columns):
@@ -73,7 +72,7 @@ class Pipe:
         self.window = window
 
         self.pipe_image = pygame.image.load("asset/pipe.png").convert_alpha()
-        self.pipe_image_flipped = pygame.transform.flip(self.pipe_image, False, True)
+        self.pipe_image_flipped = pygame.transform.flip(self.pipe_image, False, True) # flip only vertically
 
         self.width = 120
         self.gap_height = 300
@@ -97,12 +96,6 @@ class Pipe:
     
 
 class Game:
-    running = True
-    score = 0
-    pipes = []
-    current_speed = 1
-    backup_speed = current_speed
-
     def __init__(self):
         self.window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Flappy Bird")
@@ -112,6 +105,12 @@ class Game:
 
         self.bird = Bird(self.window)
         self.font = pygame.font.Font("Arial.ttf", 60)
+
+        self.running = True
+        self.score = 0
+        self.pipes = []
+        self.pipe_speed = 4
+        self.speed_level = 0
 
     def handle_collision(self):
         bird_position = self.bird.get_position()
@@ -133,6 +132,7 @@ class Game:
                 self.score += 1
 
     def update(self):
+        print("Current speed is:", self.pipe_speed)
         self.bird.add_gravity()
         self.generate_pipes()
         self.remove_offscreen_pipes()
@@ -141,7 +141,8 @@ class Game:
         pygame.display.update()
 
     def generate_pipes(self):
-        if len(self.pipes) == 0 or self.pipes[-1].pos_x < SCREEN_WIDTH - 300:
+        gap_pipe_distance = 500
+        if len(self.pipes) == 0 or self.pipes[-1].pos_x < SCREEN_WIDTH - gap_pipe_distance:
             new_pipe = Pipe(self.window)
             self.pipes.append(new_pipe)
 
@@ -154,16 +155,21 @@ class Game:
         self.bird.draw()
 
         for pipe in self.pipes:
-            pipe.move(self.current_speed)
+            pipe.move(self.pipe_speed)
             pipe.draw()
 
         score_text = self.font.render(f"Score : {self.score}", True, (0, 0, 0))
         self.window.blit(score_text, (20, 20))
 
+    
+
     def increase_speed(self):
-        if self.score // 3 > self.backup_speed:
-            self.backup_speed = self.score // 3
-            self.current_speed += 0.5
+        new_level = self.score // 3
+
+        if new_level > self.speed_level:
+            self.speed_level = new_level
+            self.pipe_speed += 1
+
     
     def run(self):
         while self.running:
@@ -180,6 +186,4 @@ class Game:
             self.handle_collision()
             self.draw()
             self.update()
-
-        return "GAME OVER"
 

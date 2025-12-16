@@ -4,7 +4,6 @@ from flappyBird import Game
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 800
-SCREEN_COLOR = (135, 206, 235)
 
 pygame.init()
 window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -48,7 +47,6 @@ def menu():
     running = True
 
     while running:
-        # window.fill(SCREEN_COLOR)
         window.blit(background, (0, 0))
 
         title = font.render("FLAPPY BIRD", True, (0, 0, 0))
@@ -66,8 +64,7 @@ def menu():
 
             if play_button.is_clicked(event):
                 game = Game()
-                if game.run() == "GAME OVER":
-                    return menu()
+                game.run()
 
             if quit_button.is_clicked(event):
                 pygame.quit()
